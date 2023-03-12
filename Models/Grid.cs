@@ -1,4 +1,4 @@
-class Grid
+public class Grid
 {
     public int Id { get; set; }
     public int AuthorId { get; set; }
