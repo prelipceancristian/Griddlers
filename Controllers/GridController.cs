@@ -1,6 +1,8 @@
+using System.Threading.Tasks;
 using AutoMapper;
 using Griddlers.Data;
 using Griddlers.DTOs;
+using Griddlers.Models;
 using Griddlers.Repositories;
 using Microsoft.AspNetCore.Mvc;
 

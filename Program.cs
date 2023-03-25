@@ -1,6 +1,9 @@
 using Griddlers.Data;
+using Griddlers.MappingProfiles;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,3 +1,4 @@
+using Griddlers.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Griddlers.Data;

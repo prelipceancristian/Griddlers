@@ -1,3 +1,5 @@
+namespace Griddlers.Models;
+
 public class Grid
 {
     public int Id { get; set; }
