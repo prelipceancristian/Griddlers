@@ -1,4 +1,5 @@
 using Griddlers.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Griddlers.Repositories;
 
@@ -10,19 +11,21 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _context = context;
     }
 
-    public void Create(T entity)
+    public async Task Create(T entity)
     {
-        _context.Add<T>(entity);
+        await _context.AddAsync<T>(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(T entity)
+    public async Task Delete(T entity)
     {
         _context.Remove<T>(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public IEnumerable<T> GetAll()
+    public async Task<IEnumerable<T>> GetAll()
     {
-        return _context.Set<T>().ToList();
+        return await _context.Set<T>().ToListAsync();
     }
 
     public async Task<T?> GetById(int id)
@@ -35,8 +38,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _context.SaveChanges();
     }
 
-    public void Update(T entity)
+    public async Task Update(T entity)
     {
         _context.Update<T>(entity);
+        await _context.SaveChangesAsync();
     }
 }
