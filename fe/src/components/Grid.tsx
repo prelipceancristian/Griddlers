@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-const getCellStyle = (baseStyle: object, value: boolean): object => ({
+const getCellStyle = (
+  baseStyle: React.CSSProperties,
+  value: boolean,
+): React.CSSProperties => ({
   ...baseStyle,
   backgroundColor: value ? "black" : "white",
 });
@@ -10,18 +13,20 @@ const getCellKey = (rowIndex: number, cellRowIndex: number): string =>
 
 function Grid({ content }: { content: boolean[][] }) {
   const [grid, setGrid] = useState(content);
-  const gridStyle = {
+  const gridStyle: React.CSSProperties = {
     border: "1px solid black",
     padding: "10px",
     borderRadius: "10px",
     display: "inline-block",
+    userSelect: "none",
   };
-  const rowStyle = {
+  const rowStyle: React.CSSProperties = {
     display: "flex",
+    userSelect: "none",
   };
-  const baseCellStyle = {
-    width: 100,
-    height: 100,
+  const baseCellStyle: React.CSSProperties = {
+    width: 60,
+    height: 60,
     margin: 3,
     color: "blue",
     userSelect: "none",
