@@ -4,7 +4,7 @@ import Grid from "./components/Grid";
 function App() {
   return (
     <Grid
-      grid={[
+      content={[
         [true, true, false],
         [false, true, false],
         [false, false, true],
