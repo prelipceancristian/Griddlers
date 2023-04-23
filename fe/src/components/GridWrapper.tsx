@@ -33,7 +33,11 @@ function getGridCoords(grid: boolean[][]): number[][] {
 }
 
 function transpose(matrix: any[][]): any[][] {
-  return matrix[0].map((col, i) => matrix.map((row) => row[i]));
+  return matrix[0].map((_, i) => matrix.map((row) => row[i]));
+}
+
+function getGridCoordsString(coords: number[][]): string {
+  return coords.map((coord) => `[${coord.join(", ")}]`).join(", ");
 }
 
 function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
@@ -42,13 +46,13 @@ function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
     gridTemplateColumns: "repeat(2, 1fr)",
     gap: 10,
   };
-  getGridCoords(content);
-  getGridCoords(transpose(content));
+  // getGridCoords(content);
+  // getGridCoords(transpose(content));
   return (
     <div style={wrapperStyleGrid}>
       <div />
-      <div> column data </div>
-      <div> row data </div>
+      <div>{getGridCoordsString(getGridCoords(transpose(content)))}</div>
+      <div>{getGridCoordsString(getGridCoords(content))}</div>
       <div>
         <Grid content={content} />
       </div>
