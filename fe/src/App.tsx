@@ -1,13 +1,23 @@
 import "./App.css";
-import Grid from "./components/Grid";
+// import Grid from "./components/Grid";
+import GridWrapper from "./components/GridWrapper";
 
 function App() {
+  // return (
+  //   <Grid
+  //     content={[
+  //       [true, true, false],
+  //       [false, true, false],
+  //       [false, false, true],
+  //     ]}
+  //   />
+  // );
   return (
-    <Grid
+    <GridWrapper
       content={[
-        [true, true, false],
-        [false, true, false],
-        [false, false, true],
+        [true, true, false, true, true, true],
+        [false, true, false, false, true, true],
+        [false, false, true, true, false, true],
       ]}
     />
   );
