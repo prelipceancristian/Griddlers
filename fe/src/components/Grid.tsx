@@ -14,20 +14,21 @@ const getCellKey = (rowIndex: number, cellRowIndex: number): string =>
 function Grid({ content }: { content: boolean[][] }) {
   const [grid, setGrid] = useState(content);
   const gridStyle: React.CSSProperties = {
-    border: "1px solid black",
-    padding: "10px",
-    borderRadius: "10px",
+    // border: "1px solid black",
+    // borderRadius: "10px",
     display: "inline-block",
     userSelect: "none",
+    backgroundColor: "#D3D3D3",
   };
   const rowStyle: React.CSSProperties = {
     display: "flex",
     userSelect: "none",
+    justifyContent: "space-evenly",
   };
   const baseCellStyle: React.CSSProperties = {
     width: 60,
     height: 60,
-    margin: 3,
+    margin: 1.5,
     color: "blue",
     userSelect: "none",
   };

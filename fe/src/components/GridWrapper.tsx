@@ -24,11 +24,6 @@ function getArrayCoords(boolArray: boolean[]): number[] {
 
 function getGridCoords(grid: boolean[][]): number[][] {
   const gridCoords: number[][] = grid.map((arr) => getArrayCoords(arr));
-  console.log(
-    "%cGridWrapper.tsx line:27 gridCoords",
-    "color: #007acc;",
-    gridCoords,
-  );
   return gridCoords;
 }
 
@@ -41,19 +36,29 @@ function getGridCoordsString(coords: number[][]): string {
 }
 
 function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
-  const wrapperStyleGrid: React.CSSProperties = {
+  const gridWrapperContainerStyle: React.CSSProperties = {
     display: "inline-grid",
     gridTemplateColumns: "repeat(2, 1fr)",
-    gap: 10,
+    gap: 5,
+    padding: 5,
+    backgroundColor: "grey",
+  };
+  const gridWrapperCellStyle: React.CSSProperties = {
+    backgroundColor: "white",
+    padding: "5px",
   };
   // getGridCoords(content);
   // getGridCoords(transpose(content));
   return (
-    <div style={wrapperStyleGrid}>
-      <div />
-      <div>{getGridCoordsString(getGridCoords(transpose(content)))}</div>
-      <div>{getGridCoordsString(getGridCoords(content))}</div>
-      <div>
+    <div style={gridWrapperContainerStyle}>
+      <div style={gridWrapperCellStyle} />
+      <div style={gridWrapperCellStyle}>
+        {getGridCoordsString(getGridCoords(transpose(content)))}
+      </div>
+      <div style={gridWrapperCellStyle}>
+        {getGridCoordsString(getGridCoords(content))}
+      </div>
+      <div style={gridWrapperCellStyle}>
         <Grid content={content} />
       </div>
     </div>
