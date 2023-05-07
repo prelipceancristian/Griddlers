@@ -31,8 +31,18 @@ function transpose(matrix: any[][]): any[][] {
   return matrix[0].map((_, i) => matrix.map((row) => row[i]));
 }
 
-function getGridCoordsString(coords: number[][]): string {
-  return coords.map((coord) => `[${coord.join(", ")}]`).join(", ");
+function getHintElements(coords: number[][], isRow: boolean = false) {
+  const noWrapWhitespaceStyle: React.CSSProperties = {
+    whiteSpace: "nowrap",
+  };
+  const getHintKey = (index: number): string =>
+    `hint-${isRow ? "row" : "column"}-${index}`;
+  return coords.map((row, index) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <div style={noWrapWhitespaceStyle} key={getHintKey(index)}>
+      {row.join(", ")}
+    </div>
+  ));
 }
 
 function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
@@ -42,21 +52,29 @@ function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
     gap: 5,
     padding: 5,
     backgroundColor: "grey",
+    width: "min-content",
   };
   const gridWrapperCellStyle: React.CSSProperties = {
     backgroundColor: "white",
     padding: "5px",
+    justifyContent: "space-around",
   };
-  // getGridCoords(content);
-  // getGridCoords(transpose(content));
+  const gridWrapperHintStyle: React.CSSProperties = {
+    ...gridWrapperCellStyle,
+    display: "flex",
+  };
+  const gridWrapperVerticalHintStyle: React.CSSProperties = {
+    ...gridWrapperHintStyle,
+    flexDirection: "column",
+  };
   return (
     <div style={gridWrapperContainerStyle}>
       <div style={gridWrapperCellStyle} />
-      <div style={gridWrapperCellStyle}>
-        {getGridCoordsString(getGridCoords(transpose(content)))}
+      <div style={gridWrapperHintStyle}>
+        {getHintElements(getGridCoords(transpose(content)))}
       </div>
-      <div style={gridWrapperCellStyle}>
-        {getGridCoordsString(getGridCoords(content))}
+      <div style={gridWrapperVerticalHintStyle}>
+        {getHintElements(getGridCoords(content))}
       </div>
       <div style={gridWrapperCellStyle}>
         <Grid content={content} />
