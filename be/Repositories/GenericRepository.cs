@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Griddlers.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,13 +13,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task Create(T entity)
     {
-        await _context.AddAsync<T>(entity);
+        await _context.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
     public async Task Delete(T entity)
     {
-        _context.Remove<T>(entity);
+        _context.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
@@ -42,7 +40,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task Update(T entity)
     {
-        _context.Update<T>(entity);
+        _context.Update(entity);
         await _context.SaveChangesAsync();
     }
 }

@@ -17,7 +17,7 @@ public class GridController : ControllerBase
 
     public GridController(DataContext dataContext, IMapper mapper)
     {
-        _repo = new(dataContext);
+        _repo = new GenericRepository<Grid>(dataContext);
         _mapper = mapper;
     }
     
@@ -28,7 +28,7 @@ public class GridController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var grid = await _repo.GetById(id);
@@ -44,7 +44,7 @@ public class GridController : ControllerBase
     }
 
     [HttpPut]
-    [Route("{id}")]
+    [Route("{id:int}")]
     public async Task<IActionResult> Put([FromRoute] int id, [FromBody] UpdateGridDto gridDto)
     {
         var grid = await _repo.GetById(id);
@@ -58,7 +58,7 @@ public class GridController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var grid = await _repo.GetById(id);

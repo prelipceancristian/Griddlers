@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Griddlers.Repositories;
 
 public interface IGenericRepository<T> where T : class
