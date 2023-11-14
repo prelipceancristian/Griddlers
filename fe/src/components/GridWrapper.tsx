@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "./Grid";
 
 /**
@@ -45,9 +45,8 @@ function getGridCoords(grid: boolean[][]): number[][] {
  * @param matrix the given matrix
  * @returns the transposed matrix
  */
-function transpose(matrix: any[][]): any[][] {
-  return matrix[0].map((_, i) => matrix.map((row) => row[i]));
-}
+const transpose = (matrix: any[][]): any[][] =>
+  matrix[0].map((_, i) => matrix.map((row) => row[i]));
 
 /**
  * This method creates the actual HTML elements necessary for the hints
@@ -76,6 +75,11 @@ function getHintElements(coords: number[][], isRow: boolean = false) {
   ));
 }
 
+const getDefaultGrid = (grid: boolean[][]): boolean[][] =>
+  Array.from({ length: grid.length }, () =>
+    new Array(grid[0].length).fill(false),
+  );
+
 function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
   const gridWrapperContainerStyle: React.CSSProperties = {
     display: "inline-grid",
@@ -98,17 +102,35 @@ function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
     ...gridWrapperHintStyle,
     flexDirection: "column",
   };
+  const bigWrapper: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 20,
+  };
+  // TODO: should add a control bar beneath the grid.
+  // Fill modes -> filled, x, clear
+  // Reset (?)
+  const defaultGrid = getDefaultGrid(content);
+  const [grid, setGrid] = useState(defaultGrid);
   return (
-    <div style={gridWrapperContainerStyle}>
-      <div style={gridWrapperCellStyle} />
-      <div style={gridWrapperHintStyle}>
-        {getHintElements(getGridCoords(transpose(content)))}
+    <div style={bigWrapper}>
+      <div style={gridWrapperContainerStyle}>
+        <div style={gridWrapperCellStyle} />
+        <div style={gridWrapperHintStyle}>
+          {getHintElements(getGridCoords(transpose(content)))}
+        </div>
+        <div style={gridWrapperVerticalHintStyle}>
+          {getHintElements(getGridCoords(content))}
+        </div>
+        <div style={gridWrapperCellStyle}>
+          <Grid content={content} grid={grid} setGrid={setGrid} />
+        </div>
       </div>
-      <div style={gridWrapperVerticalHintStyle}>
-        {getHintElements(getGridCoords(content))}
-      </div>
-      <div style={gridWrapperCellStyle}>
-        <Grid content={content} />
+      <div>
+        <button type="button" onClick={() => setGrid(defaultGrid)}>
+          Reset
+        </button>
       </div>
     </div>
   );

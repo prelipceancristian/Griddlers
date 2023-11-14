@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
 
 const getCellStyle = (
   baseStyle: React.CSSProperties,
@@ -31,29 +31,37 @@ function isGridSolved(grid: boolean[][], solution: boolean[][]): boolean {
   return true;
 }
 
-const getDefaultGrid = (grid: boolean[][]): boolean[][] =>
-  Array.from({ length: grid.length }, () =>
-    new Array(grid[0].length).fill(false),
-  );
+// const getDefaultGrid = (grid: boolean[][]): boolean[][] =>
+//   Array.from({ length: grid.length }, () =>
+//     new Array(grid[0].length).fill(false),
+//   );
 
-function Grid({ content }: { content: boolean[][] }) {
-  const [grid, setGrid] = useState([
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false],
-  ]);
-  const defaultGrid = getDefaultGrid(content);
+function Grid({
+  grid,
+  setGrid,
+  content,
+}: {
+  grid: boolean[][];
+  setGrid: React.Dispatch<React.SetStateAction<boolean[][]>>;
+  content: boolean[][];
+}) {
+  // const defaultGrid = getDefaultGrid(content);
+  // const [grid, setGrid] = useState(defaultGrid);
   const handleOnCellClick = (rowIndex: number, columnIndex: number) => {
     const gridCopy = [...grid.map((row) => [...row])];
     gridCopy[rowIndex][columnIndex] = !gridCopy[rowIndex][columnIndex];
     setGrid(gridCopy);
   };
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isGridSolved(grid, content)) {
-      // eslint-disable-next-line no-console
-      console.log("You won!");
-      setGrid(defaultGrid);
+      const timer = setTimeout(
+        // eslint-disable-next-line no-alert
+        () => window.alert("You won! Press reset to try again"),
+        100,
+      );
+      return () => clearTimeout(timer);
     }
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grid]);
 
