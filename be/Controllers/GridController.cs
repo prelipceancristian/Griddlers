@@ -9,36 +9,27 @@ namespace Griddlers.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GridController : ControllerBase
+public class GridController(IGenericRepository<Grid> gridRepository, IMapper mapper) : ControllerBase
 {
-    private readonly GenericRepository<Grid> _repo;
-    private readonly IMapper _mapper;
-
-    public GridController(DataContext dataContext, IMapper mapper)
-    {
-        _repo = new GenericRepository<Grid>(dataContext);
-        _mapper = mapper;
-    }
-    
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        return Ok(await _repo.GetAll());
+        return Ok(await gridRepository.GetAll());
     }
 
     [HttpGet]
     [Route("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var grid = await _repo.GetById(id);
-        return grid == null ? BadRequest() : Ok(grid);
+        var grid = await gridRepository.GetById(id);
+        return grid == null ? NotFound() : Ok(grid);
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] GridDto gridDto)
     {
-        var grid = _mapper.Map<Grid>(gridDto);
-        await _repo.Create(grid);
+        var grid = mapper.Map<Grid>(gridDto);
+        await gridRepository.Create(grid);
         return Created($"/api/{grid.Id}", grid);
     }
 
@@ -46,13 +37,13 @@ public class GridController : ControllerBase
     [Route("{id:int}")]
     public async Task<IActionResult> Put([FromRoute] int id, [FromBody] UpdateGridDto gridDto)
     {
-        var grid = await _repo.GetById(id);
+        var grid = await gridRepository.GetById(id);
         if(grid == null)
         {
-            return BadRequest();
+            return NotFound();
         }
         grid.GridContent = gridDto.GridContent;
-        await _repo.Update(grid);
+        await gridRepository.Update(grid);
         return Ok(grid);
     }
 
@@ -60,12 +51,12 @@ public class GridController : ControllerBase
     [Route("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var grid = await _repo.GetById(id);
+        var grid = await gridRepository.GetById(id);
         if(grid == null)
         {
-            return BadRequest();
+            return NotFound();
         }
-        await _repo.Delete(grid);
+        await gridRepository.Delete(grid);
         return NoContent();
     }
 }

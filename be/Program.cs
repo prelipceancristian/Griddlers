@@ -1,5 +1,6 @@
 using Griddlers.Data;
 using Griddlers.MappingProfiles;
+using Griddlers.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => 
     options.UseSqlite("Filename=database.db"));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddAutoMapper(typeof(GriddlersMappingProfile));
 
 var app = builder.Build();
