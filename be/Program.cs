@@ -16,6 +16,15 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddAutoMapper(typeof(GriddlersMappingProfile));
 
+builder.Services.AddCors(options =>
+    options.AddPolicy("DevCorsPolicy", policyBuilder =>
+    {
+        policyBuilder
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    }));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,10 +32,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("DevCorsPolicy");
 }
 
 app.UseHttpsRedirection();
 
+// add authentication here later
 app.UseAuthorization();
 
 app.MapControllers();
