@@ -1,28 +1,20 @@
 import "./App.css";
-// import Grid from "./components/Grid";
-// import GridWrapper from "./components/GridWrapper";
-import Home from "./components/main/Home";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Layout from "./components/main/Layout";
+import GridContainer from "./components/grid/GridContainer";
+import GridList from "./components/grid_list/GridList";
 
 function App() {
-  // return (
-  //   <Grid
-  //     content={[
-  //       [true, true, false],
-  //       [false, true, false],
-  //       [false, false, true],
-  //     ]}
-  //   />
-  // );
-  // return (
-  //   <GridWrapper
-  //     content={[
-  //       [true, true, false, true, true, true],
-  //       [false, true, false, false, true, true],
-  //       [false, false, true, true, false, true],
-  //     ]}
-  //   />
-  // );
-  return Home();
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<GridList />}></Route>
+          <Route path=":gridId" element={<GridContainer />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
