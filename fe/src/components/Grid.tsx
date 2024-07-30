@@ -55,14 +55,12 @@ function Grid({
   useEffect(() => {
     if (isGridSolved(grid, content)) {
       const timer = setTimeout(
-        // eslint-disable-next-line no-alert
         () => window.alert("You won! Press reset to try again"),
         100,
       );
       return () => clearTimeout(timer);
     }
     return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grid]);
 
   const gridStyle: React.CSSProperties = {
@@ -86,10 +84,8 @@ function Grid({
   return (
     <div style={gridStyle}>
       {grid.map((row, rowIndex) => (
-        // eslint-disable-next-line react/no-array-index-key
         <div key={rowIndex} style={rowStyle}>
           {row.map((cell, columnIndex) => (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
             <div
               key={getCellKey(rowIndex, columnIndex)}
               style={getCellStyle(baseCellStyle, cell)}
