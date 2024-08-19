@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Griddlers.Data;
 
-public class DataContext : DbContext
+public class DataContext(DbContextOptions options) : DbContext(options)
 {
-    public DataContext(DbContextOptions options) : base(options) {}
-
     private DbSet<Grid> Grids { get; set; } = default!;
 }

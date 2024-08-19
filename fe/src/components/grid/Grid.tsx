@@ -31,6 +31,17 @@ function isGridSolved(grid: boolean[][], solution: boolean[][]): boolean {
   return true;
 }
 
+const getCellDimension = (grid: boolean[][]): number => {
+  // screen width is 100vw
+  const accountedCellCount = grid.length + 2;
+  const minDim = Math.min(
+    document.documentElement.clientWidth,
+    document.documentElement.clientHeight,
+  );
+  const pixelCount = minDim / accountedCellCount;
+  return pixelCount;
+};
+
 // const getDefaultGrid = (grid: boolean[][]): boolean[][] =>
 //   Array.from({ length: grid.length }, () =>
 //     new Array(grid[0].length).fill(false),
@@ -73,9 +84,10 @@ function Grid({
     userSelect: "none",
     justifyContent: "space-evenly",
   };
+  const cellSize = getCellDimension(grid);
   const baseCellStyle: React.CSSProperties = {
-    width: 60,
-    height: 60,
+    width: cellSize,
+    height: cellSize,
     margin: 1.5,
     color: "blue",
     userSelect: "none",
