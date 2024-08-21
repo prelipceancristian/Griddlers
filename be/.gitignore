@@ -476,3 +476,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /be.sln.DotSettings
+/database.db-shm
+/database.db-wal

@@ -18,7 +18,7 @@ function GridContainer(): JSX.Element {
     const gridIdAsNumber = Number(idForGrid);
     const result = await GridController.GetGrid(gridIdAsNumber);
 
-    if (!!result.data) {
+    if (result.error === null) {
       const data = Grid.parseGridContent(result.data.GridContent);
       setGrid(data);
       setError(null);

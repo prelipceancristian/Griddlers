@@ -52,6 +52,29 @@ class GridController {
       };
     }
   };
+
+  static GetGridList = async (): Promise<ApiResponse<Grid[]>> => {
+    try {
+      const response = await axios.get(gridApiRoute);
+      const grids = response.data.map((gridData: any) =>
+        Grid.buildGrid(gridData.id, gridData.authorId, gridData.gridContent),
+      );
+      return { data: grids, error: null };
+    } catch (error) {
+      if (!axios.isAxiosError(error)) {
+        return { data: null, error: UnexpectedError };
+      }
+
+      if (!error.response) {
+        return { data: null, error: UnexpectedError };
+      }
+
+      return {
+        data: null,
+        error: GeneralServerError,
+      };
+    }
+  };
 }
 
 export default GridController;
