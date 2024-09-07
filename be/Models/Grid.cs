@@ -1,9 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Griddlers.Models;
 
+[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 public class Grid
 {
-    public int Id { get; init; }
-    // public string Title { get; set; } = string.Empty;
-    public int AuthorId { get; init; }
+    public string Id { get; init; } = Guid.NewGuid().ToString();
+    public string Title { get; set; } = string.Empty;
+    public DateTimeOffset CreatedAt { get; set; }
+    public string? AuthorId { get; init; }
     public string GridContent { get; set; } = string.Empty;
+    public Image? Image { get; set; }
 }

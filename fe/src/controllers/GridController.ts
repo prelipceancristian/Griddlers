@@ -25,11 +25,13 @@ class GridController {
     const gridUri: string = `${gridApiRoute}/${id}`;
     try {
       const response = await axios.get(gridUri);
-
-      const grid = new Grid();
-      grid.Id = response.data.id;
-      grid.AuthorId = response.data.authorId;
-      grid.GridContent = response.data.gridContent;
+      const grid = new Grid(
+        response.data.id,
+        response.data.authorId,
+        response.data.gridContent,
+        response.data.title,
+        response.data.createAt,
+      );
 
       return { data: grid, error: null };
     } catch (error) {
@@ -56,8 +58,15 @@ class GridController {
   static GetGridList = async (): Promise<ApiResponse<Grid[]>> => {
     try {
       const response = await axios.get(gridApiRoute);
-      const grids = response.data.map((gridData: any) =>
-        Grid.buildGrid(gridData.id, gridData.authorId, gridData.gridContent),
+      const grids = response.data.map(
+        (gridData: any) =>
+          new Grid(
+            gridData.id,
+            gridData.authorId,
+            gridData.gridContent,
+            gridData.title,
+            gridData.createdAt,
+          ),
       );
       return { data: grids, error: null };
     } catch (error) {

@@ -1,19 +1,23 @@
 class Grid {
-  static buildGrid = (
-    id: number,
-    authorId: number,
-    gridContent: string,
-  ): Grid => {
-    const grid = new Grid();
-    grid.Id = id;
-    grid.AuthorId = authorId;
-    grid.GridContent = gridContent;
-    return grid;
-  };
-
-  Id!: number;
-  AuthorId!: number;
+  Id!: string;
+  AuthorId!: string | null;
   GridContent!: string;
+  Title!: string;
+  CreatedAt!: string;
+
+  constructor(
+    id: string,
+    authorId: string | null,
+    gridContent: string,
+    title: string,
+    createdAt: string,
+  ) {
+    this.Id = id;
+    this.AuthorId = authorId;
+    this.GridContent = gridContent;
+    this.Title = title;
+    this.CreatedAt = createdAt;
+  }
 
   static parseGridContent = (content: string): boolean[][] => {
     const numberMatrix: Number[][] = JSON.parse(content);

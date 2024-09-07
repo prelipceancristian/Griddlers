@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Grid from "../../models/Grid";
 import GridController from "../../controllers/GridController";
 import { GeneralServerError } from "../../constants/ErrorConstants";
+import GridCard from "./GridCard";
+import "./GridList.css";
 
 const GridList = () => {
   const [gridList, setGridList] = useState<Grid[] | null>(null);
@@ -36,13 +38,11 @@ const GridList = () => {
   }
 
   return (
-    <ol>
+    <div className="GridListContainer">
       {gridList.map((grid) => (
-        <li>
-          {grid.Id}, {grid.GridContent}
-        </li>
+        <GridCard grid={grid} key={grid.Id}></GridCard>
       ))}
-    </ol>
+    </div>
   );
 };
 

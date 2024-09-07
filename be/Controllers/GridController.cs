@@ -1,5 +1,4 @@
 using AutoMapper;
-using Griddlers.Data;
 using Griddlers.DTOs;
 using Griddlers.Models;
 using Griddlers.Repositories;
@@ -19,7 +18,7 @@ public class GridController(IGenericRepository<Grid> gridRepository, IMapper map
 
     [HttpGet]
     [Route("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(string id)
     {
         var grid = await gridRepository.GetById(id);
         return grid == null ? NotFound() : Ok(grid);
@@ -35,7 +34,7 @@ public class GridController(IGenericRepository<Grid> gridRepository, IMapper map
 
     [HttpPut]
     [Route("{id:int}")]
-    public async Task<IActionResult> Put([FromRoute] int id, [FromBody] UpdateGridDto gridDto)
+    public async Task<IActionResult> Put([FromRoute] string id, [FromBody] UpdateGridDto gridDto)
     {
         var grid = await gridRepository.GetById(id);
         if(grid == null)
@@ -49,7 +48,7 @@ public class GridController(IGenericRepository<Grid> gridRepository, IMapper map
 
     [HttpDelete]
     [Route("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(string id)
     {
         var grid = await gridRepository.GetById(id);
         if(grid == null)

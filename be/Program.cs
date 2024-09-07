@@ -15,6 +15,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite("Filename=database.db"));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddAutoMapper(typeof(GriddlersMappingProfile));
+//builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
 builder.Services.AddCors(options =>
     options.AddPolicy("DevCorsPolicy", policyBuilder =>

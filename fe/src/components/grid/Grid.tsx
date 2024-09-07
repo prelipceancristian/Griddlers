@@ -33,12 +33,13 @@ function isGridSolved(grid: boolean[][], solution: boolean[][]): boolean {
 
 const getCellDimension = (grid: boolean[][]): number => {
   // screen width is 100vw
-  const accountedCellCount = grid.length + 2;
+  const accountedCellCount = grid.length + 6;
   const minDim = Math.min(
     document.documentElement.clientWidth,
     document.documentElement.clientHeight,
   );
   const pixelCount = minDim / accountedCellCount;
+  console.log(pixelCount);
   return pixelCount;
 };
 
@@ -88,7 +89,7 @@ function Grid({
   const baseCellStyle: React.CSSProperties = {
     width: cellSize,
     height: cellSize,
-    margin: 1.5,
+    margin: 1,
     color: "blue",
     userSelect: "none",
   };
