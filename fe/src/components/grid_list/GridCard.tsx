@@ -1,9 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import Grid from "../../models/Grid";
 import "./GridCard.css";
 
 const gridCard = ({ grid }: { grid: Grid }) => {
+  const navigate = useNavigate();
+  const openGrid = () => {
+    navigate(`/${grid.Id}`);
+  };
+
   return (
-    <div className="GridCardContainer" onClick={() => console.log("clicked")}>
+    <div className="GridCardContainer" onClick={openGrid}>
       <div className="GridCardImageDataContainer">
         <img
           className="GridCardImage"
