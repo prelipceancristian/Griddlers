@@ -17,7 +17,7 @@ public class GridController(IGenericRepository<Grid> gridRepository, IMapper map
     }
 
     [HttpGet]
-    [Route("{id:int}")]
+    [Route("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
         var grid = await gridRepository.GetById(id);
