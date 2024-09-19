@@ -32,11 +32,16 @@ namespace Griddlers.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ImageId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Grids");
                 });
@@ -46,34 +51,20 @@ namespace Griddlers.Migrations
                     b.Property<string>("ImageId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("GridId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ImageName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ImageId");
 
-                    b.HasIndex("GridId")
-                        .IsUnique();
-
                     b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("Griddlers.Models.Image", b =>
-                {
-                    b.HasOne("Griddlers.Models.Grid", "Grid")
-                        .WithOne("Image")
-                        .HasForeignKey("Griddlers.Models.Image", "GridId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Grid");
                 });
 
             modelBuilder.Entity("Griddlers.Models.Grid", b =>
                 {
+                    b.HasOne("Griddlers.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
                     b.Navigation("Image");
                 });
 #pragma warning restore 612, 618

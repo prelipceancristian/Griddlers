@@ -10,5 +10,6 @@ public class Grid
     public DateTimeOffset CreatedAt { get; set; }
     public string? AuthorId { get; init; }
     public string GridContent { get; set; } = string.Empty;
+    public string? ImageId { get; set; }
     public Image? Image { get; set; }
 }

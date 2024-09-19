@@ -2,7 +2,8 @@ namespace Griddlers.Services;
 
 public interface IFileStorageService
 {
-    Task UploadFile (Stream stream, string fileLocation);
-    Task<Stream> DownloadFile (string fileLocation);
-    Task DeleteFile (string fileLocation);
+    Task StoreFile(Stream stream, string fileId);
+    Task<Stream> GetFileAsync(string fileId);
+    Task DeleteFileAsync(string fileId);
+    Task<Uri> GetFileUriAsync(string fileId);
 }

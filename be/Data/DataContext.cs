@@ -12,8 +12,8 @@ public class DataContext(DbContextOptions options) : DbContext(options)
     {
         modelBuilder.Entity<Grid>()
             .HasOne(g => g.Image)
-            .WithOne(i => i.Grid)
-            .HasForeignKey<Image>(i => i.GridId)
-            .IsRequired();
+            .WithMany()
+            .HasForeignKey(g => g.ImageId)
+            .IsRequired(false);
     }
 }

@@ -29,7 +29,7 @@ public class GridController(IGenericRepository<Grid> gridRepository, IMapper map
     {
         var grid = mapper.Map<Grid>(gridDto);
         await gridRepository.Create(grid);
-        return Created($"/api/{grid.Id}", grid);
+        return Created($"/api/Grid/{grid.Id}", grid);
     }
 
     [HttpPut]

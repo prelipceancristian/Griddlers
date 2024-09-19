@@ -1,52 +1,42 @@
 
+using Griddlers.Models.Internal;
+
 namespace Griddlers.Services;
 
 public class LocalFileStorageService : IFileStorageService
 {
-    private readonly string _baseFilePath = "./filestorage";
+    private readonly FileStorageSettings _settings;
+    private readonly ApiData _apiData;
 
-    public Task DeleteFile(string fileLocation)
+    public LocalFileStorageService(FileStorageSettings settings, ApiData apiData)
     {
-        try
-        {
-            var completeFileLocation = $"{_baseFilePath}/{fileLocation}";
-            File.Delete(completeFileLocation);
-            return Task.CompletedTask;
-        }
-        catch
-        {
-            //TODO: log exception
-            throw;
-        }
-
+        _settings = settings;
+        _apiData = apiData;
+    }
+    
+    public async Task StoreFile(Stream stream, string fileId)
+    {
+        var path = Path.Join(_settings.FileStoragePath, fileId);
+        await using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
+        await stream.CopyToAsync(fileStream);
     }
 
-    public async Task<Stream> DownloadFile(string fileLocation)
+    public Task<Stream> GetFileAsync(string fileId)
     {
-        try
-        {
-            var completeFileLocation = $"{_baseFilePath}/{fileLocation}";
-            return await Task.FromResult(File.Open(completeFileLocation, FileMode.Open));
-        }
-        catch
-        {
-            //TODO: log exception
-            throw;
-        }
+        var fullFilePath = Path.Join(_settings.FileStoragePath, fileId);
+        var fileStream = new FileStream(fullFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        return Task.FromResult<Stream>(fileStream);
     }
 
-    public async Task UploadFile(Stream stream, string fileLocation)
+    public Task<Uri> GetFileUriAsync(string fileId)
     {
-        try
-        {
-            var completeFileLocation = $"{_baseFilePath}/{fileLocation}";
-            using FileStream fileStream = File.Create(completeFileLocation);
-            await stream.CopyToAsync(fileStream);
-        }
-        catch
-        {
-            //TODO: log exception
-            throw;
-        }
+        var link = $"{_apiData.ServerIdentifier}/api/images/{fileId}";
+        var uri = new Uri(link);
+        return Task.FromResult(uri);
+    }
+
+    public Task DeleteFileAsync(string fileId)
+    {
+        throw new NotImplementedException();
     }
 }
