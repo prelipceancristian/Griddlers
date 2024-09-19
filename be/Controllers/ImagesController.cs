@@ -1,6 +1,7 @@
 using Griddlers.DTOs;
 using Griddlers.Services;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
 
 namespace Griddlers.Controllers;
 
@@ -8,6 +9,8 @@ namespace Griddlers.Controllers;
 [Route("api/[controller]")]
 public class ImagesController : ControllerBase
 {
+     private readonly string[] _allowedMimeFormats = ["image/png",  "image/jpeg", "image/svg+xml"];
+
     private readonly ILogger<ImagesController> _logger;
     private readonly IImagesService _imagesService;
 
@@ -57,6 +60,20 @@ public class ImagesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UploadImage(IFormFile file)
     {
+        try
+        {
+            await using var stream = file.OpenReadStream();
+            var imageFormat = await Image.DetectFormatAsync(stream);
+            if (!_allowedMimeFormats.Contains(imageFormat.DefaultMimeType))
+            {
+                return BadRequest("This image format is not supported");
+            }
+        }
+        catch (UnknownImageFormatException e)
+        {
+            _logger.LogError(e, "Failed to parse image");
+            return BadRequest("Failed to parse image");
+        }
         try
         {
             var image = await _imagesService.UploadImage(file);
