@@ -1,10 +1,11 @@
 using Griddlers.Models;
+using Griddlers.Models.Internal;
 
 namespace Griddlers.Services;
 
 public interface IImagesService
 {
-    public Task<Image> UploadImage(IFormFile file);
+    public Task<WriteResult<Image>> UploadImage(IFormFile file);
 
     public Task<(Image?, Uri)> GetImageMetadata(string imageId);
 

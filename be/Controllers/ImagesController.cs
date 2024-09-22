@@ -1,7 +1,6 @@
 using Griddlers.DTOs;
 using Griddlers.Services;
 using Microsoft.AspNetCore.Mvc;
-using SixLabors.ImageSharp;
 
 namespace Griddlers.Controllers;
 
@@ -9,8 +8,6 @@ namespace Griddlers.Controllers;
 [Route("api/[controller]")]
 public class ImagesController : ControllerBase
 {
-     private readonly string[] _allowedMimeFormats = ["image/png",  "image/jpeg", "image/svg+xml"];
-
     private readonly ILogger<ImagesController> _logger;
     private readonly IImagesService _imagesService;
 
@@ -24,6 +21,9 @@ public class ImagesController : ControllerBase
     [Route("metadata/{id}")]
     public async Task<IActionResult> GetImageMetadata(string id)
     {
+        // This endpoint can be called when having only the id available
+        // This could be used to obtain more data about an image, but for now I think it is a bit redundant.
+        // I think simply providing the image as a URL is enough.
         try
         {
             var (imageMetadata, uri) = await _imagesService.GetImageMetadata(id);
@@ -45,10 +45,16 @@ public class ImagesController : ControllerBase
     [Route("{imageId}")]
     public async Task<IActionResult> GetImage(string imageId)
     {
+        // When an entity requires an image, it contains a url attached.
+        // The image will be requested by the client.
+        // In the case of using a local file storage (with its local implementation), this api should also
+        // serve the image when calling for the url.
         try
         {
+            var (imageMetadata, _) = await _imagesService.GetImageMetadata(imageId);
+            if (imageMetadata is null) return NotFound();
             var imageData = await _imagesService.GetImage(imageId);
-            return Ok(imageData);
+            return File(imageData, imageMetadata.ImageFormat);
         }
         catch (Exception ex)
         {
@@ -60,24 +66,17 @@ public class ImagesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UploadImage(IFormFile file)
     {
+        // This endpoint registers the image into the database and saves the image content in the
+        // file storage. Upon creating the image, it should provide the url at which it can be found 
         try
         {
-            await using var stream = file.OpenReadStream();
-            var imageFormat = await Image.DetectFormatAsync(stream);
-            if (!_allowedMimeFormats.Contains(imageFormat.DefaultMimeType))
+            var result = await _imagesService.UploadImage(file);
+            if (!string.IsNullOrEmpty(result.Error))
             {
-                return BadRequest("This image format is not supported");
+                return BadRequest(result.Error);
             }
-        }
-        catch (UnknownImageFormatException e)
-        {
-            _logger.LogError(e, "Failed to parse image");
-            return BadRequest("Failed to parse image");
-        }
-        try
-        {
-            var image = await _imagesService.UploadImage(file);
-            return Created($"api/Images/metadata/{image.ImageId}", image);
+            var (_, uri) = await _imagesService.GetImageMetadata(result.Value.ImageId);
+            return Created($"api/Images/metadata/{result.Value.ImageId}", uri);
         }
         catch (Exception ex)
         {

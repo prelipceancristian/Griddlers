@@ -4,6 +4,7 @@ class Grid {
   GridContent!: string;
   Title!: string;
   CreatedAt!: string;
+  ImageId!: string | null;
 
   constructor(
     id: string,
@@ -11,12 +12,14 @@ class Grid {
     gridContent: string,
     title: string,
     createdAt: string,
+    imageId: string | null,
   ) {
     this.Id = id;
     this.AuthorId = authorId;
     this.GridContent = gridContent;
     this.Title = title;
     this.CreatedAt = createdAt;
+    this.ImageId = imageId;
   }
 
   static parseGridContent = (content: string): boolean[][] => {

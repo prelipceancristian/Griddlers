@@ -6,9 +6,11 @@
 .HomeHeader {
     background-color: #A8BDC7;
     text-align: center;
-    font-size: 50px;
+    font-size: 80px;
     padding: 10px;
     margin-bottom: 30px;
+    font-weight: 200;
+    font-family:Arial, Helvetica, sans-serif;
 
     user-select: none; /* Disable text selection */
     -webkit-user-select: none; /* For Safari */

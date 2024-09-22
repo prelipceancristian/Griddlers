@@ -7,13 +7,18 @@ const gridCard = ({ grid }: { grid: Grid }) => {
   const openGrid = () => {
     navigate(`/${grid.Id}`);
   };
+  const imageSource =
+    grid.ImageId === null
+      ? "/logo192.png"
+      : `http://localhost:5115/api/images/${grid.ImageId}`;
 
   return (
     <div className="GridCardContainer" onClick={openGrid}>
       <div className="GridCardImageDataContainer">
         <img
           className="GridCardImage"
-          src="/logo192.png"
+          // src="/logo192.png"
+          src={imageSource}
           alt="grid image"
         ></img>
       </div>

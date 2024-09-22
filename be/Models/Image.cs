@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Griddlers.Models;
 
 public class Image
@@ -5,6 +7,6 @@ public class Image
     public string ImageId { get; set; } = null!;
     public string? ImageName { get; set; }
 
-    // public string? ImageFormat { get; set; } = null!;
-    //TODO: store actual image data, like content and format, date of creation, etc.
+    // Holds MIME Type
+    public string ImageFormat { get; init; } = null!;
 }

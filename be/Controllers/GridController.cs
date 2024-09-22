@@ -13,7 +13,8 @@ public class GridController(IGenericRepository<Grid> gridRepository, IMapper map
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        return Ok(await gridRepository.GetAll());
+        var grids = await gridRepository.GetAll();
+        return Ok(grids);
     }
 
     [HttpGet]
@@ -28,12 +29,13 @@ public class GridController(IGenericRepository<Grid> gridRepository, IMapper map
     public async Task<IActionResult> Post([FromBody] GridDto gridDto)
     {
         var grid = mapper.Map<Grid>(gridDto);
+        grid.CreatedAt = DateTime.UtcNow;
         await gridRepository.Create(grid);
         return Created($"/api/Grid/{grid.Id}", grid);
     }
 
     [HttpPut]
-    [Route("{id:int}")]
+    [Route("{id:alpha}")]
     public async Task<IActionResult> Put([FromRoute] string id, [FromBody] UpdateGridDto gridDto)
     {
         var grid = await gridRepository.GetById(id);
