@@ -21,7 +21,7 @@ interface ErrorResponse {
 type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 
 class GridController {
-  static GetGrid = async (id: Number): Promise<ApiResponse<Grid>> => {
+  static GetGrid = async (id: string): Promise<ApiResponse<Grid>> => {
     const gridUri: string = `${gridApiRoute}/${id}`;
     try {
       const response = await axios.get(gridUri);
@@ -30,7 +30,8 @@ class GridController {
         response.data.authorId,
         response.data.gridContent,
         response.data.title,
-        response.data.createAt,
+        response.data.createdAt,
+        response.data.imageId,
       );
 
       return { data: grid, error: null };
@@ -66,6 +67,7 @@ class GridController {
             gridData.gridContent,
             gridData.title,
             gridData.createdAt,
+            gridData.imageId,
           ),
       );
       return { data: grids, error: null };

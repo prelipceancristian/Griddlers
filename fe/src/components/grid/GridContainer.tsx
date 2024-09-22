@@ -15,8 +15,10 @@ function GridContainer(): JSX.Element {
   const { gridId } = useParams();
 
   const fetchData = async (idForGrid: string | undefined) => {
-    const gridIdAsNumber = Number(idForGrid);
-    const result = await GridController.GetGrid(gridIdAsNumber);
+    if (idForGrid === undefined) {
+      return;
+    }
+    const result = await GridController.GetGrid(idForGrid);
 
     if (result.error === null) {
       const data = Grid.parseGridContent(result.data.GridContent);
