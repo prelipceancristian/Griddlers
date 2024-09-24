@@ -80,7 +80,13 @@ const getDefaultGrid = (grid: boolean[][]): boolean[][] =>
     new Array(grid[0].length).fill(false),
   );
 
-function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
+function GridWrapper({
+  content,
+  title,
+}: {
+  content: boolean[][];
+  title: string;
+}): JSX.Element {
   const gridWrapperContainerStyle: React.CSSProperties = {
     display: "inline-grid",
     gridTemplateColumns: "repeat(2, 1fr)",
@@ -108,31 +114,38 @@ function GridWrapper({ content }: { content: boolean[][] }): JSX.Element {
     alignItems: "center",
     gap: 20,
   };
+  const titleStyle: React.CSSProperties = {
+    fontSize: 40,
+    textAlign: "center",
+  };
   // TODO: should add a control bar beneath the grid.
   // Fill modes -> filled, x, clear
   // Reset (?)
   const defaultGrid = getDefaultGrid(content);
   const [grid, setGrid] = useState(defaultGrid);
   return (
-    <div style={bigWrapper}>
-      <div style={gridWrapperContainerStyle}>
-        <div style={gridWrapperCellStyle} />
-        <div style={gridWrapperHintStyle}>
-          {getHintElements(getGridCoords(transpose(content)))}
+    <>
+      <div style={titleStyle}>{title}</div>
+      <div style={bigWrapper}>
+        <div style={gridWrapperContainerStyle}>
+          <div style={gridWrapperCellStyle} />
+          <div style={gridWrapperHintStyle}>
+            {getHintElements(getGridCoords(transpose(content)))}
+          </div>
+          <div style={gridWrapperVerticalHintStyle}>
+            {getHintElements(getGridCoords(content))}
+          </div>
+          <div style={gridWrapperCellStyle}>
+            <Grid content={content} grid={grid} setGrid={setGrid} />
+          </div>
         </div>
-        <div style={gridWrapperVerticalHintStyle}>
-          {getHintElements(getGridCoords(content))}
-        </div>
-        <div style={gridWrapperCellStyle}>
-          <Grid content={content} grid={grid} setGrid={setGrid} />
+        <div>
+          <button type="button" onClick={() => setGrid(defaultGrid)}>
+            Reset
+          </button>
         </div>
       </div>
-      <div>
-        <button type="button" onClick={() => setGrid(defaultGrid)}>
-          Reset
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
 

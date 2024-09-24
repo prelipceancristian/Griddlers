@@ -10,7 +10,8 @@ import {
 } from "../../constants/ErrorConstants";
 
 function GridContainer(): JSX.Element {
-  const [grid, setGrid] = useState<boolean[][] | null>(null);
+  const [gridMatrix, setGridMatrix] = useState<boolean[][] | null>(null);
+  const [grid, setGrid] = useState<Grid | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { gridId } = useParams();
 
@@ -21,8 +22,10 @@ function GridContainer(): JSX.Element {
     const result = await GridController.GetGrid(idForGrid);
 
     if (result.error === null) {
+      console.log(result);
       const data = Grid.parseGridContent(result.data.GridContent);
-      setGrid(data);
+      setGrid(result.data);
+      setGridMatrix(data);
       setError(null);
       return;
     }
@@ -47,11 +50,11 @@ function GridContainer(): JSX.Element {
     return <div> {error} </div>;
   }
 
-  return (
-    <div className="GridContainer">
-      {grid === null ? <div /> : <GridWrapper content={grid} />}
-    </div>
-  );
+  if (gridMatrix === null || grid === null) {
+    return <div />;
+  }
+
+  return <GridWrapper content={gridMatrix} title={grid.Title} />;
 }
 
 export default GridContainer;
