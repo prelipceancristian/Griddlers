@@ -13,7 +13,7 @@ const gridCard = ({ grid }: { grid: Grid }) => {
       : `http://localhost:5115/api/images/${grid.ImageId}`;
 
   return (
-    <div className="GridCardContainer" onClick={openGrid}>
+    <div className="GridCardContainer elevated-outline" onClick={openGrid}>
       <div className="GridCardImageDataContainer">
         <img
           className="GridCardImage"

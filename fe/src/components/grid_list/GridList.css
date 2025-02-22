@@ -1,7 +1,14 @@
+:root {
+  --card-width: 450px; /* Define the minimum width for a card */
+  --card-margin: 20px; /* Define the minimum distance between cards */
+}
+
 .GridListContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 30px;
-    padding-top: 20px;
+  padding: 20px;
+  display: grid; /* Use CSS Grid for layout */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(calc(var(--card-width) + var(--card-margin)), 1fr)
+  ); /* Create columns */
+  gap: var(--card-margin); /* Add gap between cards */
 }
